@@ -1,14 +1,14 @@
 <h1>Gerenciamento de Rotas de Servicos</h1>
 
 <hr>
-                    <h2>Bibliotecas utilizadas</h2>
+                    <h2>Bibliotecas utilizadas<h2/>
 <ul>
   <li>EPPlus (Ler arquivos Excel)<li/>
 <ul/>
   
 <hr>
       
-                    <h3>Feito até o momento:</h3>
+                    <h3>Feito até o momento:<h3/>
 
 <ul>
   <li>API Service de Pessoas<li/>
@@ -21,7 +21,7 @@
   
 <hr>
   
-                    <h3>Falta fazer:</h3>
+                    <h3>Falta fazer:<h3/>
   
 <ul>
   <li>Selecionar os dados da planilha que serão exibidos<li/>
