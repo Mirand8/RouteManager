@@ -10,7 +10,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
+    <ProjectReference Include="..\Models\ModelsLib.csproj" />
   </ItemGroup>
 
 </Project>
