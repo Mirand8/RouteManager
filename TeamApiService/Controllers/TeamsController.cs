@@ -56,9 +56,13 @@ namespace TeamApiService.Controllers
             var team = await _teamService.Get(id);
 
             if (!team.Name.Equals(teamParam.Name))
-                if (await _teamService.GetByName(teamParam.Name) != null) return BadRequest("O time de nome {teamParam.Name} ja existe!");
+                if (await _teamService.GetByName(teamParam.Name) != null) return BadRequest($"O time de nome {teamParam.Name} ja existe!");
 
             teamParam.Members = team.Members;
+            team.Members.ForEach(async x => {
+                var person = await PersonService.Get(x.Id);
+                await PersonService.UpdateAvailablety(x.Id);
+            });
             var response = await _teamService.Update(id, teamParam);
             if (response == null) return NotFound("Time nao encontrado!");
 
@@ -78,10 +82,7 @@ namespace TeamApiService.Controllers
         [HttpPut("{id:length(24)}/AddPerson")]
         public async Task<dynamic> UpdateInsert(string id, [FromBody] Person personParam)
         {
-            var person = await PersonService.Get(personParam.Id);
-            if (person == null) return NotFound("Pessoa nao encontrada!");
-
-            var team = await _teamService.UpdateToInsert(id, person);
+            var team = await _teamService.UpdateToInsert(id, personParam);
             if (team == null) return NotFound("Time nao encontrado!");
             return NoContent();
         }
@@ -92,6 +93,7 @@ namespace TeamApiService.Controllers
         {
             var team = await _teamService.UpdateToDelete(id, personParam);
             if (team == null) return NotFound("Time nao encontrado!");
+
             return NoContent();
         }
 

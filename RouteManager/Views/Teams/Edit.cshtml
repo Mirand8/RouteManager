@@ -35,6 +35,31 @@
                 </label>
             </div>
             <div class="form-group">
+                <h3>Adicionar novos membros:</h3>
+                <label asp-for="Members" class="control-label"></label><br/>
+                @if (ViewBag.AvailablePeopleToTeam != null)
+                    {
+                    @foreach (var person in ViewBag.AvailablePeopleToTeam)
+                    {
+                        <input name="checkedMembersToAdd" type="checkbox" value=@person.Id>
+                        <label for="@person.Name"> @person.Name</label>
+                        <br />
+                    }
+                }
+                else
+                {
+                    <div class="p-1 mb-2 bg-danger text-white">Nenhuma pessoa disponivel para time!</div>
+                }
+                <h3>Membros do Time:</h3>
+                <label asp-for="Members" class="control-label"></label><br />
+                @foreach (var person in ViewBag.Members)
+                {
+                    <input name="checkedMembersToRemove" type="checkbox" value=@person.Id />
+                    <label for="@person.Name"> @person.Name</label>
+                    <br />
+                }
+            </div>
+            <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>
         </form>
@@ -46,5 +71,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
 }

@@ -19,6 +19,6 @@ namespace RouteManager.Models
 
         [Display(Name = "Membros")]
         [NotMapped]
-        public virtual List<PersonViewModel> Members { get; set; }
+        public virtual List<PersonViewModel> Members { get; set; } = new List<PersonViewModel>();
     }
 }

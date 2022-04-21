@@ -80,7 +80,7 @@ namespace RouteManager.Services
                 httpClient.DefaultRequestHeaders.Accept.Add(
                     new MediaTypeWithQualityHeaderValue("application/json"));
 
-                return await httpClient.PutAsJsonAsync($"Teams/{id}/Insert", person);
+                return await httpClient.PutAsJsonAsync($"Teams/{id}/AddPerson", person);
             }
         }
 
@@ -94,7 +94,7 @@ namespace RouteManager.Services
                 httpClient.DefaultRequestHeaders.Accept.Add(
                     new MediaTypeWithQualityHeaderValue("application/json"));
 
-                return await httpClient.PutAsJsonAsync($"Teams/{id}/Remove", person);
+                return await httpClient.PutAsJsonAsync($"Teams/{id}/RemovePerson", person);
             }
         }
 

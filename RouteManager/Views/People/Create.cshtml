@@ -18,11 +18,11 @@
             </div>
             <div class="form-group form-check">
                 <label class="form-check-label">
-                    <input class="form-check-input" asp-for="IsAvailableToTeam"/> @Html.DisplayNameFor(model => model.IsAvailableToTeam)
+                    <input class="form-check-input" asp-for="IsAvailableToTeam" /> @Html.DisplayNameFor(model => model.IsAvailableToTeam)
                 </label>
             </div>
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary"/>
+                <input type="submit" value="Create" class="btn btn-primary" />
             </div>
         </form>
     </div>
@@ -33,5 +33,7 @@
 </div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
 }

@@ -69,6 +69,19 @@ namespace RouteManager.Services
             }
         }
 
+        public static async Task<HttpResponseMessage> UpdateAvailablety(string id, PersonViewModel personParam)
+        {
+            using (var httpClient = new HttpClient())
+            {
+                if (httpClient.BaseAddress == null) httpClient.BaseAddress = new Uri(baseUri);
+                httpClient.DefaultRequestHeaders.Accept.Clear();
+                httpClient.DefaultRequestHeaders.Accept.Add(
+                    new MediaTypeWithQualityHeaderValue("application/json"));
+                var person = await Get(id);
+                return await httpClient.PutAsJsonAsync($"People/{person.Id}/Availablety", personParam);
+            }
+        }
+
 
         public static async Task<HttpResponseMessage> Delete(string id)
         {

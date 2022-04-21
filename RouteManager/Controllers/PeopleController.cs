@@ -43,7 +43,7 @@ namespace RouteManager.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,Name,IsAvailable")] PersonViewModel person)
+        public async Task<IActionResult> Edit(string id, [Bind("Id,Name,IsAvailableToTeam")] PersonViewModel person)
         {
             if (!id.Equals(person.Id)) return RedirectToAction(nameof(Index));
             var response = await PersonService.Update(id, person);
