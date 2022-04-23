@@ -9,17 +9,17 @@ namespace TeamApiService.Services
 {
     public static class PersonService
     {
-        public static async Task UpdateAvailablety(string id)
+        public static async Task UpdateCurrentTeam(string id, string newTeam)
         {
             var httpClient = new HttpClient();
 
-            if (httpClient.BaseAddress == null) httpClient.BaseAddress = new Uri("https://localhost:44379/");
+            if (httpClient.BaseAddress == null) httpClient.BaseAddress = new Uri("https://localhost:44379/api/People/");
 
             httpClient.DefaultRequestHeaders.Accept.Clear();
             httpClient.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
 
-            await httpClient.PutAsync($"api/People/{id}/Status", null);
+            await httpClient.PutAsync($"CurrentTeam/{id}/{newTeam}", null);
         }
 
         public static async Task<Person> Get(string id)

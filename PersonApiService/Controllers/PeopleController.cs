@@ -27,11 +27,11 @@ namespace PersonApiService.Controllers
         public async Task<ActionResult<Person>> Get(string id)
         {
             var person = await _personService.Get(id);
-            if (person == null) return NotFound("Pessoa nao encontrada");
+            if (person == null) return NotFound("Pessoa nao encontrada!");
             return Ok(person);
         }
 
-        [HttpGet("{nome}")]
+        [HttpGet("{name}", Name = "GetPeopleByName")]
         public async Task<dynamic> GetByName(string name)
         {
             var person = await _personService.GetByName(name);
@@ -47,18 +47,18 @@ namespace PersonApiService.Controllers
         }
 
         [HttpPut("{id:length(24)}")]
-        public async Task<dynamic> Update(string id, [FromBody] Person personIn)
+        public async Task<dynamic> Update(string id, [FromBody] Person personParam)
         {
-            var person = await _personService.Update(id, personIn);
+            var person = await _personService.Update(id, personParam);
 
             if (person == null) return BadRequest("Pessoa nao encontrada");
             return NoContent();
         }
 
-        [HttpPut("{id:length(24)}/Availablety")]
-        public async Task<dynamic> UpdateAvailablety(string id)
+        [HttpPut("CurrentTeam/{id:length(24)}/{newTeam}")]
+        public async Task<dynamic> UpdateCurrentTeam (string id, string newTeam)
         {
-            var person = await _personService.UpdateAvailablety(id);
+            var person = await _personService.UpdateCurrentTeam(id, newTeam);
             if (person == null) return NotFound("Pessoa nao encontrada");
 
             return NoContent();
@@ -68,8 +68,12 @@ namespace PersonApiService.Controllers
         public async Task<dynamic> Delete(string id)
         {
             var person = await _personService.Delete(id);
-
             if (person == null) return NotFound("Pessoa nao encontrada!");
+
+            // var personTeam = await TeamService.GetByName(person.CurrentTeam);
+            //if (personTeam == null) return NotFound($"Time {person.CurrentTeam} não encontrado!");
+            //await TeamService.UpdateToRemoveMember(personTeam.Id, person);
+            
             return NoContent();
         }
 

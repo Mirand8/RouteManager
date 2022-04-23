@@ -17,7 +17,7 @@
                 @Html.DisplayNameFor(model => model.Name)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.IsAvailableToTeam)
+                @Html.DisplayNameFor(model => model.IsOnTeam)
             </th>
             <th></th>
         </tr>
@@ -30,7 +30,7 @@
                 @Html.DisplayFor(modelItem => item.Name)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IsAvailableToTeam)
+                @Html.DisplayFor(modelItem => item.IsOnTeam)
             </td>
             <td>
                 @Html.ActionLink("Editar", "Edit", new { id = item.Id }) |

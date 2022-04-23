@@ -14,32 +14,28 @@ namespace RouteManager.Controllers
             return View(await TeamService.Get());
         }
 
-
         public async Task<IActionResult> Details(string id)
         {
             if (string.IsNullOrEmpty(id)) return RedirectToAction(nameof(Index));
             return View(await TeamService.Get(id));
         }
 
-
         public async Task<IActionResult> Create()
         {
-            var availableMembers = await GetAvailableMembers();
-            if (!availableMembers.Any() || availableMembers == null) ViewBag.AvailableMembers = new List<PersonViewModel>();
-            else ViewBag.AvailableMembers = availableMembers;
+            var availablePeopleToTeam = await GetAvailablePeopleToTeam();
+            ViewBag.AvailablePeopleToTeam = availablePeopleToTeam;
             return View();
         }
 
-
         [HttpPost]
-        public async Task<IActionResult> Create(TeamViewModel team)
+        public async Task<IActionResult> Create([Bind("Name,IsAvailable")] TeamViewModel team)
         {
-            var membersSelected = new List<PersonViewModel>();
+            var newMembers = new List<PersonViewModel>();
 
             if (ModelState.IsValid)
             {
-                var members = Request.Form["checkedMembers"].ToList();
-                if (members.Count == 0)
+                var membersSelectedIds = Request.Form["checkedMembers"].ToList();
+                if (membersSelectedIds.Count == 0)
                 {
                     ModelState.AddModelError(nameof(team), "Um time deve ter pelo menos um membro!");
                     return RedirectToAction(nameof(Create));
@@ -52,75 +48,69 @@ namespace RouteManager.Controllers
                     return RedirectToAction(nameof(Create));
                 }
 
-                else
+                membersSelectedIds.ForEach(async personId =>
                 {
-                    members.ForEach(async id =>
-                    {
-                        var person = await PersonService.Get(id);
-                        await PersonService.UpdateAvailablety(id, person);
-                        membersSelected.Add(person);
-                    });
-                    team.Members = membersSelected;
+                    var person = await PersonService.Get(personId);
+                    newMembers.Add(person);
+                });
+                team.Members = newMembers;
 
-                    await TeamService.Create(team);
-
-                    return View(nameof(Create));
-                }
+                await TeamService.Create(team);
+                return RedirectToAction(nameof(Create));                
             }
+
             return View(team);
         }
-
 
         public async Task<IActionResult> Edit(string id)
         {
             if (string.IsNullOrEmpty(id)) return RedirectToAction(nameof(Index));
 
             var team = await TeamService.Get(id);
-            var people = await PersonService.Get();
-            var availablePeopleToTeam = people.Where(member => member.IsAvailableToTeam);
 
-            var members = new List<PersonViewModel>();
-            team.Members.ForEach(person => members.Add(person));
+            var availablePeopleToTeam = await GetAvailablePeopleToTeam();
+            ViewBag.AvailablePeopleToTeam = availablePeopleToTeam.ToList();
 
-            ViewBag.AvailablePeopleToTeam = availablePeopleToTeam;
-            ViewBag.Members = members;
+            var teamMembers = new List<PersonViewModel>();
+            team.Members.ForEach(person => teamMembers.Add(person));
 
             return View(team);
         }
-
 
         [HttpPost]
-        public async Task<IActionResult> Edit(string id, TeamViewModel team)
+        public async Task<IActionResult> Edit(string teamId, TeamViewModel team)
         {
-            if (!team.Id.Equals(id)) return RedirectToAction(nameof(Index));
+            if (!team.Id.Equals(teamId)) return RedirectToAction(nameof(Index));
 
-            if (!ModelState.IsValid) return View(team);
+            if (ModelState.IsValid)
+            {
+                var teamUpdate = await TeamService.Get(teamId);
 
-            var membersToAdd = Request.Form["checkedMembersToAdd"].ToList();
-            var membersToRemove = Request.Form["checkedMembersToRemove"].ToList();
-            var teamUpdate = await TeamService.Get(id);
-
-            if (membersToAdd.Count != 0) 
-                membersToAdd.ForEach(async personId =>
+                var membersIdToAdd = Request.Form["checkedMembersToAdd"].ToList();
+                if (membersIdToAdd.Count != 0)
                 {
-                    var person = await PersonService.Get(personId);
-                    await PersonService.UpdateAvailablety(personId, person);
-                    await TeamService.UpdateInsert(id, person);
-                });
-            if (membersToRemove.Count != 0) 
-                membersToRemove.ForEach(async personId =>
+                    membersIdToAdd.ForEach(async personId =>
+                    {
+                        var person = await PersonService.Get(personId);
+                        await TeamService.UpdateToAddMember(teamId, person);
+                    });
+                }
+
+                var membersIdToRemove = Request.Form["checkedMembersToRemove"].ToList();
+                if (membersIdToRemove.Count != 0)
                 {
-                    var person = await PersonService.Get(personId);
-                    await PersonService.UpdateAvailablety(personId, person);
-                    await TeamService.UpdateRemove(id, await PersonService.Get(personId));
-                });
+                    membersIdToRemove.ForEach(async personId =>
+                    {
+                        var person = await PersonService.Get(personId);
+                        await TeamService.UpdateToRemoveMember(teamId, person);
+                    });
+                }
 
-            var response = await TeamService.Update(id, team);
-            if (response.IsSuccessStatusCode) return RedirectToAction(nameof(Index));
-
+                var response = await TeamService.Update(teamId, team);
+                if (response.IsSuccessStatusCode) return RedirectToAction(nameof(Index));
+            }
             return View(team);
         }
-
 
         public async Task<IActionResult> Delete(string id)
         {
@@ -132,11 +122,10 @@ namespace RouteManager.Controllers
             return View();
         }
 
-
-        static async Task<IEnumerable<PersonViewModel>> GetAvailableMembers()
+        static async Task<IEnumerable<PersonViewModel>> GetAvailablePeopleToTeam()
         {
             var members = await PersonService.Get();
-            return members.Where(x => x.IsAvailableToTeam).ToList();
+            return members.Where(x => !x.IsOnTeam).ToList();
         }
 
     }

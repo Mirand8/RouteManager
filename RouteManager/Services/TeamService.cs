@@ -26,7 +26,6 @@ namespace RouteManager.Services
             return teams;
         }
 
-
         public static async Task<TeamViewModel> Get(string id)
         {
             var teams = new TeamViewModel();
@@ -42,7 +41,6 @@ namespace RouteManager.Services
             return teams;
         }
 
-
         public static async Task Create(TeamViewModel team)
         {
             using (var httpClient = new HttpClient())
@@ -55,7 +53,6 @@ namespace RouteManager.Services
                 await httpClient.PostAsJsonAsync("Teams", team);
             }
         }
-
 
         public static async Task<HttpResponseMessage> Update(string id, TeamViewModel team)
         {
@@ -70,8 +67,7 @@ namespace RouteManager.Services
             }
         }
 
-
-        public static async Task<HttpResponseMessage> UpdateInsert(string id, PersonViewModel person)
+        public static async Task<HttpResponseMessage> UpdateToAddMember(string id, PersonViewModel person)
         {
             using (var httpClient = new HttpClient())
             {
@@ -80,12 +76,11 @@ namespace RouteManager.Services
                 httpClient.DefaultRequestHeaders.Accept.Add(
                     new MediaTypeWithQualityHeaderValue("application/json"));
 
-                return await httpClient.PutAsJsonAsync($"Teams/{id}/AddPerson", person);
+                return await httpClient.PutAsJsonAsync($"Teams/{id}/AddNewMember", person);
             }
         }
 
-
-        public static async Task<HttpResponseMessage> UpdateRemove(string id, PersonViewModel person)
+        public static async Task<HttpResponseMessage> UpdateToRemoveMember(string id, PersonViewModel person)
         {
             using (var httpClient = new HttpClient())
             {
@@ -94,10 +89,9 @@ namespace RouteManager.Services
                 httpClient.DefaultRequestHeaders.Accept.Add(
                     new MediaTypeWithQualityHeaderValue("application/json"));
 
-                return await httpClient.PutAsJsonAsync($"Teams/{id}/RemovePerson", person);
+                return await httpClient.PutAsJsonAsync($"Teams/{id}/RemoveMember", person);
             }
         }
-
 
         public static async Task<HttpResponseMessage> Delete(string id)
         {

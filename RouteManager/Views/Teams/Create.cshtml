@@ -12,20 +12,12 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        @if (ViewBag.Message != null)
-        {
-            <div class="p-1 mb-2 bg-success text-white">@ViewBag.Message</div>
-        }
-        @if (ViewBag.ErrorMessage != null)
-        {
-            <div class="p-1 mb-2 bg-danger text-white">@ViewBag.ErrorMessage</div>
-        }
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
-                <input asp-for="Name" class="form-control"/>
+                <input asp-for="Name" class="form-control" />
                 <span asp-validation-for="Name" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -45,9 +37,9 @@
             </div>
             <div class="form-group" id="members-checkbox">
                 <label asp-for="Members" class="control-label">Membros disponiveis para time: </label><br />
-                @if (ViewBag.AvailableMembers != null)
+                @if (ViewBag.AvailablePeopleToTeam != null)
                 {
-                    @foreach (var person in ViewBag.AvailableMembers)
+                    @foreach (var person in ViewBag.AvailablePeopleToTeam)
                     {
                         <input name="checkedMembers" type="checkbox" value=@person.Id>
                         <label for="@person.Name"> @person.Name</label>
@@ -56,11 +48,12 @@
                 }
                 else
                 {
-                    <div class="p-1 mb-2 bg-danger text-white">Nenhuma pessoa disponivel para time!</div>
+                    <p style="background: red">Nenhum time disponivel para time!</p>
                 }
             </div>
+
             <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary"/>
+                <input type="submit" value="Criar" class="btn btn-primary" />
             </div>
         </form>
     </div>

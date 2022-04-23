@@ -9,8 +9,8 @@ namespace ModelsLib
 		[JsonProperty("Name")]
 		public string Name { get; set; }
 
-		[MongoDB.Bson.Serialization.Attributes.BsonRequired]
-		[JsonProperty("IsAvailableToTeam")]
-		public bool IsAvailableToTeam { get; set; }
+		[JsonProperty("CurrentTeam")]
+		public string CurrentTeam { get; set; }
+
 	}
 }
