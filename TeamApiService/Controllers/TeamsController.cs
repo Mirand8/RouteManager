@@ -74,14 +74,16 @@ namespace TeamApiService.Controllers
         {
             var team = await _teamService.Get(id);
 
+            if (teamParam.City == null) return BadRequest("Time nao pode esta vazio");
+
             if (!team.Name.Equals(teamParam.Name))
             {
                 if (await _teamService.GetByName(teamParam.Name) != null) return BadRequest($"O time de nome {teamParam.Name} ja existe!");
-                team.Members.ForEach(async x => await PersonService.UpdateCurrentTeam(x.Id, team.Name));
+                if (teamParam.Name != team.Name)
+                    team.Members.ForEach(async x => await PersonService.UpdateCurrentTeam(x.Id, teamParam.Name));
             }
 
             teamParam.Members = team.Members;
-
 
             if (!team.City.Id.Equals(teamParam.City.Id))
                 teamParam.City = await CitiesService.Get(teamParam.City.Id);

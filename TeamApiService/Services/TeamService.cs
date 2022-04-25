@@ -55,8 +55,6 @@ namespace TeamApiService.Services
             return team;
         }
 
-        
-
         public async Task<Team> UpdateAvailablety(string id)
         {
             var team = await Get(id) ?? null;
@@ -65,7 +63,6 @@ namespace TeamApiService.Services
 
             return team;
         }
-
         public async Task<Team> UpdateToAddMember(string id, Person personParam)
         {
             var team = await Get(id) ?? null;
@@ -113,5 +110,6 @@ namespace TeamApiService.Services
             await _teams.UpdateOneAsync(filter, update);
             return personTeam;
         }
+
     }
 }

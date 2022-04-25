@@ -25,8 +25,7 @@ namespace PersonApiService.Services
             }
         }
 
-        // PESSOA NÃO É REMOVIDA DO TIME AO SER EXCLUIDA!!
-        public static async Task UpdateToRemoveMember(string id, Person person)
+        public static async Task<HttpResponseMessage> UpdateToRemoveMember(string id, Person person)
         {
             using (var httpClient = new HttpClient())
             {
@@ -34,9 +33,8 @@ namespace PersonApiService.Services
                 httpClient.DefaultRequestHeaders.Accept.Clear();
                 httpClient.DefaultRequestHeaders.Accept.Add(
                     new MediaTypeWithQualityHeaderValue("application/json"));
-                var personAsJson = new JavaScriptSerializer().Serialize(person);
-                var content = new StringContent(personAsJson, Encoding.UTF8, "application/json");
-                await httpClient.PutAsJsonAsync($"Teams/RemoveMember/{id}", content);
+
+                return await httpClient.PutAsJsonAsync($"Teams/RemoveMember/{id}", person);
             }
         }
 

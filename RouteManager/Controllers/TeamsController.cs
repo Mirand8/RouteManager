@@ -42,6 +42,8 @@ namespace RouteManager.Controllers
                 var membersSelectedIds = Request.Form["checkedMembers"].ToList();
 
                 var citiesSelectedId = Request.Form["selectedCity"].FirstOrDefault();
+                if (string.IsNullOrEmpty(citiesSelectedId)) return RedirectToAction(nameof(Create));
+
                 var city = await CityService.Get(citiesSelectedId);
                 if (city == null) return RedirectToAction(nameof(Create));
 
@@ -100,9 +102,9 @@ namespace RouteManager.Controllers
 
             if (!team.Id.Equals(id)) return RedirectToAction(nameof(Index));
 
-            var teamUpdate = await TeamService.Get(id);
-
+            var teamToUpdate = await TeamService.Get(id);
             var city = await CityService.Get(team.City.Id);
+            team.City = city;
 
             var membersIdToAdd = Request.Form["checkedMembersToAdd"].ToList();
             if (membersIdToAdd.Count != 0)

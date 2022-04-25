@@ -56,7 +56,7 @@ namespace RouteManager.Controllers
             var response = await PersonService.Delete(id);
             if (response.IsSuccessStatusCode) return RedirectToAction(nameof(Index));
 
-            return View();
+            return View(nameof(Index));
         }
 
     }

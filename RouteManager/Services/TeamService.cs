@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace RouteManager.Services
 {
-    public class TeamService
+    public static class TeamService
     {
         readonly static string _baseUri = "https://localhost:44340/api/";
 
@@ -103,6 +103,20 @@ namespace RouteManager.Services
 
                 return await httpClient.DeleteAsync($"Teams/{id}");
             }
+        }
+
+        public static async Task<List<TeamViewModel>> GetTeamsByCity(string cityId)
+        {
+            var httpClient = new HttpClient();
+            if (httpClient.BaseAddress == null) httpClient.BaseAddress = new Uri(_baseUri);
+            httpClient.DefaultRequestHeaders.Accept.Clear();
+            httpClient.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("application/json"));
+            var response = await httpClient.GetAsync($"Teams/City/{cityId}");
+
+            if (response.StatusCode != System.Net.HttpStatusCode.OK) return null;
+            var responseBody = await response.Content.ReadAsStringAsync();
+            return JsonConvert.DeserializeObject<List<TeamViewModel>>(responseBody);
         }
 
     }

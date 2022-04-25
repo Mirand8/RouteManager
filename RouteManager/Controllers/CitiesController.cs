@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using RouteManager.Models;
 using RouteManager.Services;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace RouteManager.Controllers
@@ -39,30 +40,11 @@ namespace RouteManager.Controllers
             return View(city);
         }
 
-        public async Task<IActionResult> Edit(string id)
-        {
-            if (string.IsNullOrEmpty(id)) return RedirectToAction(nameof(Index));
-            var city = await CityService.Get(id);
-
-            return View(city);
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> Edit(string id, [Bind("Id,Name,State")] CityViewModel city)
-        {
-            if (ModelState.IsValid)
-            {
-                if (string.IsNullOrEmpty(city.Name) || string.IsNullOrEmpty(city.State))
-                    return View(city);
-                var response = await CityService.Update(id, city);
-                if (response.StatusCode != System.Net.HttpStatusCode.OK) return RedirectToAction(nameof(Index));
-            }
-
-            return View(city);
-        }
-
         public async Task<IActionResult> Delete(string id)
         {
+            var teamsInCity = await TeamService.GetTeamsByCity(id);
+            if (teamsInCity.Any()) return RedirectToAction(nameof(Index));
+
             if (string.IsNullOrEmpty(id)) return RedirectToAction(nameof(Index));
             var response = await CityService.Delete(id);
             if (response.StatusCode != System.Net.HttpStatusCode.OK) return RedirectToAction(nameof(Index));
