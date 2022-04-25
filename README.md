@@ -36,18 +36,15 @@
 
   <hr>
     
-    <h3>
-        Falta Fazer:
-      </h3>
+  <h3>
+      Falta Fazer:
+    </h3>
 
-        <li>
-          Login
-        <li>
-          Leitor do documento EXCEL que contem os dados do serviço
-        <li>
-          Gerador das rotas em .DOC
+  <li>
+    Login
+  <li>
+    Leitor do documento EXCEL que contem os dados do serviço
+  <li>
+    Gerador das rotas em .DOC
   <hr>
-      
-OBS: São necessárias alterações nas Micro Services para persistencia de dados 
-      
     
