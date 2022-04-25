@@ -11,9 +11,8 @@ namespace RouteManager.Models
         [Display(Name = "Nome")]
         public string Name { get; set; }
         [Display(Name = "Cidade")]
-        public string City { get; set; }
-        [Display(Name = "Estado")]
-        public string State { get; set; }
+        public CityViewModel City { get; set; }
+
         [Display(Name = "Disponibilidade")]
         public bool IsAvailable { get; set; }
 

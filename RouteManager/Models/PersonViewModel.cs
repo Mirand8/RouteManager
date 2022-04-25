@@ -9,18 +9,18 @@ namespace RouteManager.Models
         {
         }
 
-        public PersonViewModel(string id, string name, bool isOnATeam)
+        public PersonViewModel(string id, string name, string currentTeam)
         {
             Id = id;
             Name = name;
-            IsOnTeam = isOnATeam;
+            CurrentTeam = currentTeam;
         }
 
         [NotMapped]
         public string Id { get; set; }
         [Display(Name = "Nome")]
         public string Name { get; set; }
-        [Display(Name = "Esta em Time")]
-        public bool IsOnTeam { get; set; }
+        [Display(Name = "Time Atual")]
+        public string CurrentTeam { get; set; }
     }
 }

@@ -62,7 +62,6 @@ namespace RouteManager.Services
                 httpClient.DefaultRequestHeaders.Accept.Clear();
                 httpClient.DefaultRequestHeaders.Accept.Add(
                     new MediaTypeWithQualityHeaderValue("application/json"));
-
                 return await httpClient.PutAsJsonAsync($"Teams/{id}", team);
             }
         }
@@ -76,7 +75,7 @@ namespace RouteManager.Services
                 httpClient.DefaultRequestHeaders.Accept.Add(
                     new MediaTypeWithQualityHeaderValue("application/json"));
 
-                return await httpClient.PutAsJsonAsync($"Teams/{id}/AddNewMember", person);
+                return await httpClient.PutAsJsonAsync($"Teams/AddNewMember/{id}", person);
             }
         }
 
@@ -89,7 +88,7 @@ namespace RouteManager.Services
                 httpClient.DefaultRequestHeaders.Accept.Add(
                     new MediaTypeWithQualityHeaderValue("application/json"));
 
-                return await httpClient.PutAsJsonAsync($"Teams/{id}/RemoveMember", person);
+                return await httpClient.PutAsJsonAsync($"Teams/RemoveMember/{id}", person);
             }
         }
 

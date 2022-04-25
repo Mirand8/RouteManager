@@ -30,7 +30,7 @@ namespace TeamApiService.Controllers
             return team;
         }
 
-        [HttpGet("GetByName/{name}")]
+        [HttpGet("{name}")]
         public async Task<dynamic> GetByName(string name)
         {
             var team = await _teamService.GetByName(name);
@@ -38,10 +38,17 @@ namespace TeamApiService.Controllers
             return team;
         }
 
+        [HttpGet("City/{cityId:length(24)}")]
+        public async Task<IEnumerable<Team>> GetTeamsByCity([FromRoute] string cityId) =>
+           await _teamService.GetByCity(cityId);
+
         [HttpPost]
         public async Task<dynamic> Post([FromBody] Team teamParam)
         {
             if (await _teamService.GetByName(teamParam.Name) != null) return BadRequest("Ja existe um time com esse nome!");
+
+            var city = await CitiesService.Get(teamParam.City.Id);
+            if (city == null) return BadRequest("Esta cidade não existe!");
 
             var people = new List<Person>();
             foreach (var person in teamParam.Members)
@@ -55,6 +62,7 @@ namespace TeamApiService.Controllers
             people.ForEach(x => x.CurrentTeam = teamParam.Name);
             people.ForEach(async x => await PersonService.UpdateCurrentTeam(x.Id, teamParam.Name));
 
+            teamParam.City = city;
             teamParam.Members = people;
             await _teamService.Create(teamParam);
 
@@ -67,9 +75,16 @@ namespace TeamApiService.Controllers
             var team = await _teamService.Get(id);
 
             if (!team.Name.Equals(teamParam.Name))
+            {
                 if (await _teamService.GetByName(teamParam.Name) != null) return BadRequest($"O time de nome {teamParam.Name} ja existe!");
+                team.Members.ForEach(async x => await PersonService.UpdateCurrentTeam(x.Id, team.Name));
+            }
 
             teamParam.Members = team.Members;
+
+
+            if (!team.City.Id.Equals(teamParam.City.Id))
+                teamParam.City = await CitiesService.Get(teamParam.City.Id);
 
             var response = await _teamService.Update(id, teamParam);
             if (response == null) return NotFound("Time nao encontrado!");
@@ -101,21 +116,21 @@ namespace TeamApiService.Controllers
         {
             var personQuery = await PersonService.Get(newMember.Id);
             if (personQuery == null) return BadRequest("Pessoa não encontrada!");
-            if (!string.IsNullOrEmpty(personQuery.CurrentTeam)) return BadRequest($"{personQuery.Id} ja esta em um time e não pode ser adicionada!");
+
+            if (!string.IsNullOrEmpty(personQuery.CurrentTeam))
+                return BadRequest($"{personQuery.Name}:{personQuery.Id} ja esta em um time e deve ser removido do atual time ({personQuery.CurrentTeam}) antes de adiciona-lo em outro!");
 
             var team = await _teamService.UpdateToAddMember(id, personQuery);
             if (team == null) return NotFound("Time nao encontrado!");
+            if (team.Name == "$DuplicatePersonError$") return BadRequest("A pessoa ja esta no time!");
 
             return NoContent();
         }
 
         [HttpPut("RemoveMember/{id:length(24)}")]
-        public async Task<dynamic> UpdateToRemoveMember(string id, [FromBody] Person memberToRemove)
+        public async Task<dynamic> UpdateToRemoveMember([FromRoute] string id, [FromBody] Person memberToRemove)
         {
-            var personQuery = await PersonService.Get(memberToRemove.Id);
-            if (personQuery == null) return BadRequest("Pessoa não encontrada!");
-
-            var team = await _teamService.UpdateToRemoveMember(id, personQuery);
+            var team = await _teamService.UpdateToRemoveMember(id, memberToRemove);
             if (team == null) return NotFound("Time nao encontrado!");
 
             return NoContent();

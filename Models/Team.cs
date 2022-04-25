@@ -1,10 +1,6 @@
 ﻿using MongoDB.Bson.Serialization.Attributes;
 using Newtonsoft.Json;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ModelsLib
 {
@@ -20,10 +16,7 @@ namespace ModelsLib
         [JsonProperty("IsAvailable")]
         public bool IsAvailable { get; set; }
         [BsonRequired]
-        [JsonProperty("State")]
-        public string State { get; set; }
-        [BsonRequired]
         [JsonProperty("City")]
-        public string City { get; set; }
+        public City City { get; set; }
     }
 }

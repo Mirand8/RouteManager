@@ -19,7 +19,7 @@ namespace TeamApiService.Services
             httpClient.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
 
-            await httpClient.PutAsync($"CurrentTeam/{id}/{newTeam}", null);
+            await httpClient.PutAsync($"CurrentTeam/{id}?newTeam={newTeam}", null);
         }
 
         public static async Task<Person> Get(string id)

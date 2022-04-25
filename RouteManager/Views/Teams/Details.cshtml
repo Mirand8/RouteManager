@@ -10,39 +10,49 @@
 <div>
     <hr />
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Id)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Id)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Name)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Name)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.City)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.City)
+        <dd class="col-sm-10">
+            <p>Id: @Model.City.Id</p>
+            <p>Nome: @Model.City.Name</p>
+            <p>Estado: @Model.City.State</p>
+            <p>Representação: @Model.City.CityRepresentation</p>
         </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.State)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.State)
-        </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.IsAvailable)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.IsAvailable)
+        <dd class="col-sm-10">
+            @if (@Model.IsAvailable == true)
+            {
+                <p style="color: green">Disponível</p>
+            }
+            else
+            {
+                <p style="color: red">Indisponível</p>
+            }
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Members)
         </dt>
+        <dd class="col-sm-10">
+            @foreach (var person in @Model.Members)
+            {
+                <span>Id: @person.Id, Nome: @person.Name,Time Atual: @person.CurrentTeam<br> </span>
+            }
+        </dd>
     </dl>
 </div>
 <div>

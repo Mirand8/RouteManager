@@ -23,7 +23,7 @@ namespace CitiesApiService.Services
                          .SortBy(city => city.State)
                          .ToListAsync();
 
-        public async Task<City> GetById(string id) =>
+        public async Task<City> Get(string id) =>
             await _cities.Find(city => city.Id == id)
                          .FirstOrDefaultAsync<City>();
 
@@ -44,17 +44,16 @@ namespace CitiesApiService.Services
 
         public async Task<City> Update(string id, City cityParam)
         {
-            var city = await GetById(id);
-
+            var city = await Get(id);
             if (city == null) return null;
-            await _cities.ReplaceOneAsync(city => city.Id == id, cityParam);
 
+            await _cities.ReplaceOneAsync(city => city.Id == id, cityParam);
             return cityParam;
         }
 
         public async Task<City> Remove(string id)
         {
-            var city = await GetById(id);
+            var city = await Get(id);
 
             if (city == null) return null;
             await _cities.DeleteOneAsync(city => city.Id == id);

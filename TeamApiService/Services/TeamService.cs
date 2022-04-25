@@ -26,6 +26,15 @@ namespace TeamApiService.Services
            await _teams.Find(team => team.Id == id)
                        .FirstOrDefaultAsync<Team>();
 
+        public async Task<Team> GetByName(string name) =>
+            await _teams.Find(team => team.Name == name)
+                        .FirstOrDefaultAsync<Team>();
+
+        public async Task<IEnumerable<Team>> GetByCity(string cityId) =>
+            await _teams.Find(team => team.City.Id == cityId)
+                        .SortBy(team => team.Name)
+                        .ToListAsync();
+
         public async Task<Team> Create(Team teamParam)
         {
             await _teams.InsertOneAsync(teamParam); 
@@ -46,9 +55,7 @@ namespace TeamApiService.Services
             return team;
         }
 
-        public async Task<Team> GetByName(string name) =>
-            await _teams.Find(team => team.Name == name)
-                        .FirstOrDefaultAsync<Team>();
+        
 
         public async Task<Team> UpdateAvailablety(string id)
         {
@@ -79,12 +86,16 @@ namespace TeamApiService.Services
             var team = await Get(id) ?? null;
             if (team == null) return team;
 
-            var filter = Builders<Team>.Filter.Where(x => x.Id == team.Id);
-            var pullMemberDefinition = Builders<Team>.Update.PullFilter(x => x.Members, member => member.Id == personParam.Id);
-            await _teams.UpdateOneAsync(filter, pullMemberDefinition);
+            var personQuery = await PersonService.Get(personParam.Id);
+            if (personQuery != null)
+            {
+                var filter = Builders<Team>.Filter.Where(x => x.Id == team.Id);
+                var pullMemberDefinition = Builders<Team>.Update.PullFilter(x => x.Members, member => member.Id == personQuery.Id);
+                await _teams.UpdateOneAsync(filter, pullMemberDefinition);
+                await PersonService.UpdateCurrentTeam(personQuery.Id, null);
+            }
 
-            //await PersonService.UpdateCurrentTeam(personParam.Id, " ");
-
+            team.Members.Remove(team.Members.Find(x => x.Id == personParam.Id));
             return team;
         }
 

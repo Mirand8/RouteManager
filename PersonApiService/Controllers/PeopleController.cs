@@ -55,8 +55,8 @@ namespace PersonApiService.Controllers
             return NoContent();
         }
 
-        [HttpPut("CurrentTeam/{id:length(24)}/{newTeam}")]
-        public async Task<dynamic> UpdateCurrentTeam (string id, string newTeam)
+        [HttpPut("CurrentTeam/{id:length(24)}")]
+        public async Task<dynamic> UpdateCurrentTeam (string id, string newTeam = null)
         {
             var person = await _personService.UpdateCurrentTeam(id, newTeam);
             if (person == null) return NotFound("Pessoa nao encontrada");
@@ -70,9 +70,9 @@ namespace PersonApiService.Controllers
             var person = await _personService.Delete(id);
             if (person == null) return NotFound("Pessoa nao encontrada!");
 
-            // var personTeam = await TeamService.GetByName(person.CurrentTeam);
-            //if (personTeam == null) return NotFound($"Time {person.CurrentTeam} não encontrado!");
-            //await TeamService.UpdateToRemoveMember(personTeam.Id, person);
+            var personTeam = await TeamService.GetByName(person.CurrentTeam);
+            if (personTeam == null) return NotFound($"Time {person.CurrentTeam} não encontrado!");
+            await TeamService.UpdateToRemoveMember(personTeam.Id, person);
             
             return NoContent();
         }
