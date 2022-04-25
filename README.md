@@ -15,36 +15,37 @@
     MongoDriver
   
   
-<hr> 
-<h3>
-  Feito até o Momento:
-</h3>
-
-<li>
-  Micro Service de Pessoas
-<li>
-  Micro Service de Cidades
-<li>
-  Micro Service de Times
-<li>
-  MVC: CRUD de Pessoas, utilizando sua micro Service
-<li>
-  MVC: CRUD de Cidades, utilizando sua micro Service
-<li>
-  MVC: CRUD de Times, utilizando sua micro Service
+  <hr> 
     
-  <hr>
-  
-<h3>
-    Falta Fazer:
+  <h3>
+    Feito até o Momento:
   </h3>
-      
-    <li>
-      Login
-    <li>
-      Leitor do documento EXCEL que contem os dados do serviço
-    <li>
-      Gerador das rotas em .DOC
+
+  <li>
+    Micro Service de Pessoas
+  <li>
+    Micro Service de Cidades
+  <li>
+    Micro Service de Times
+  <li>
+    MVC: CRUD de Pessoas, utilizando sua micro Service
+  <li>
+    MVC: CRUD de Cidades, utilizando sua micro Service
+  <li>
+    MVC: CRUD de Times, utilizando sua micro Service
+
+<hr>
+  
+  <h3>
+      Falta Fazer:
+    </h3>
+
+      <li>
+        Login
+      <li>
+        Leitor do documento EXCEL que contem os dados do serviço
+      <li>
+        Gerador das rotas em .DOC
 <hr>
       
 OBS: São necessárias alterações nas Micro Services para persistencia de dados 
