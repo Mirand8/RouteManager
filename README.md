@@ -13,28 +13,27 @@
     EPPlus
   <li>
     MongoDriver
- 
-  <hr>
-        
-        
-  <h3>
-    Feito até o Momento:
-    </h3>
-    
-    <li>
-      Micro Service de Pessoas
-    <li>
-      Micro Service de Cidades
-    <li>
-      Micro Service de Times
-    <li>
-      MVC: CRUD de Pessoas, utilizando sua micro Service
-    <li>
-      MVC: CRUD de Cidades, utilizando sua micro Service
-    <li>
-      MVC: CRUD de Cidades, utilizando sua micro Service
-    <li>
-      MVC: CRUD de Times, utilizando sua micro Service
+  
+  
+<hr> 
+<h3>
+  Feito até o Momento:
+</h3>
+
+<li>
+  Micro Service de Pessoas
+<li>
+  Micro Service de Cidades
+<li>
+  Micro Service de Times
+<li>
+  MVC: CRUD de Pessoas, utilizando sua micro Service
+<li>
+  MVC: CRUD de Cidades, utilizando sua micro Service
+<li>
+  MVC: CRUD de Cidades, utilizando sua micro Service
+<li>
+  MVC: CRUD de Times, utilizando sua micro Service
     
   <hr>
   
