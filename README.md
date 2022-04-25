@@ -22,19 +22,19 @@
     </h3>
     
     <li>
-    Micro Service de Pessoas
+      Micro Service de Pessoas
     <li>
-    Micro Service de Cidades
+      Micro Service de Cidades
     <li>
-    Micro Service de Times
+      Micro Service de Times
     <li>
-    MVC: CRUD de Pessoas, utilizando sua micro Service
+      MVC: CRUD de Pessoas, utilizando sua micro Service
     <li>
-    MVC: CRUD de Cidades, utilizando sua micro Service
+      MVC: CRUD de Cidades, utilizando sua micro Service
     <li>
-    MVC: CRUD de Cidades, utilizando sua micro Service
+      MVC: CRUD de Cidades, utilizando sua micro Service
     <li>
-    MVC: CRUD de Times, utilizando sua micro Service
+      MVC: CRUD de Times, utilizando sua micro Service
     
   <hr>
   
@@ -43,11 +43,11 @@
   </h3>
       
     <li>
-    Login
+      Login
     <li>
-    Leitor do documento EXCEL que contem os dados do serviço
+      Leitor do documento EXCEL que contem os dados do serviço
     <li>
-    Gerador das rotas em .DOC
+      Gerador das rotas em .DOC
 
 OBS: São necessárias alterações nas Micro Services para persistencia de dados 
       
