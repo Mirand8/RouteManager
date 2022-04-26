@@ -36,6 +36,8 @@
     MVC: CRUD de Times, utilizando sua micro Service
   <li>
     Leitor do documento EXCEL que contem os dados do serviço
+  <li>
+    Gerador das rotas em .DOC
   <hr>
     
   <h3>
@@ -44,7 +46,5 @@
 
   <li>
     Login
-  <li>
-    Gerador das rotas em .DOC
   <hr>
     
