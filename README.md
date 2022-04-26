@@ -10,10 +10,11 @@
   <h2>Bibliotecas utilizadas</h2>
   
   <li>
-    EPPlus
-  <li>
     MongoDriver
-  
+  <li>
+    Xceed.Word - Para escrever o word
+  <li>
+    ClosedXML - Para ler o Excel
   
   <hr> 
     
@@ -33,7 +34,8 @@
     MVC: CRUD de Cidades, utilizando sua micro Service
   <li>
     MVC: CRUD de Times, utilizando sua micro Service
-
+  <li>
+    Leitor do documento EXCEL que contem os dados do serviço
   <hr>
     
   <h3>
@@ -42,8 +44,6 @@
 
   <li>
     Login
-  <li>
-    Leitor do documento EXCEL que contem os dados do serviço
   <li>
     Gerador das rotas em .DOC
   <hr>
