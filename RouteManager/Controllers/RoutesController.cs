@@ -26,7 +26,7 @@ namespace RouteManager.Controllers
             var headers = new List<string>();
 
             var excelFile = _excelFilesService.Get();
-
+            if (excelFile == null) return View();
             foreach (var item in excelFile.ExcelFiles.First()) headers.Add(item.Name);
 
             headers.RemoveAll(x => x == "CONTRATO" || x == "ASSINANTE" || x == "ENDEREÇO" || x == "CEP" || x == "OS" || x == "TIPO OS");
@@ -49,12 +49,12 @@ namespace RouteManager.Controllers
                 }
 
                 var stream = new MemoryStream();
-                var doc = DocX.Create(stream);
+                var routeWordDocument = DocX.Create(stream);
 
-                var paragraph = doc.InsertParagraph();
+                var paragraph = routeWordDocument.InsertParagraph();
                 paragraph.Append($"ROTA TRABALHO - {DateTime.Now:d}").Font("Times New Roman").FontSize(18).Bold().Alignment = Xceed.Document.NET.Alignment.center;
 
-                paragraph = doc.InsertParagraph();
+                paragraph = routeWordDocument.InsertParagraph();
                 paragraph.Append("RETORNOS").Font("Times New Roman").FontSize(15).Bold().Alignment = Xceed.Document.NET.Alignment.center;
 
                 var teams = await TeamService.Get();
@@ -76,9 +76,7 @@ namespace RouteManager.Controllers
                 foreach (var team in teams)
                 {
                     var teamData = excel.ExcelFiles.Find(x => x.GetValue("CIDADE") == team.City.Name.ToUpper());
-                    if (teamData != null) continue;
-
-                    validTeams.Add(team);
+                    if (teamData != null) validTeams.Add(team);
                 }
 
                 if (!validTeams.Any()) return RedirectToAction(nameof(Index));
@@ -87,35 +85,34 @@ namespace RouteManager.Controllers
                 {
                     var teamData = excel.ExcelFiles.Find(x => x.GetValue("CIDADE") == team.City.Name.ToUpper());
 
-                    paragraph = doc.InsertParagraph();
-                    paragraph = doc.InsertParagraph();
-                    paragraph = doc.InsertParagraph();
-                    paragraph = doc.InsertParagraph();
+                    paragraph = routeWordDocument.InsertParagraph();
+                    paragraph = routeWordDocument.InsertParagraph();
+                    paragraph = routeWordDocument.InsertParagraph();
+                    paragraph = routeWordDocument.InsertParagraph();
                     paragraph.Append($"Nome da Equipe: {team.Name}").Font("Times New Roman").FontSize(15).Bold();
 
-                    paragraph = doc.InsertParagraph();
-                    paragraph = doc.InsertParagraph();
+                    paragraph = routeWordDocument.InsertParagraph();
+                    paragraph = routeWordDocument.InsertParagraph();
                     teamData.TryGetValue("CONTRATO", out var contrato);
                     teamData.TryGetValue("ASSINANTE", out var assinante);
                     teamData.TryGetValue("PERÍODO", out var periodo);
                     paragraph.Append($"Contrato: {contrato}  -  Assinante: {assinante}  -  Período: {periodo}").Font("Times New Roman").FontSize(14).Bold().UnderlineStyle(Xceed.Document.NET.UnderlineStyle.singleLine);
-                    paragraph = doc.InsertParagraph();
+                    paragraph = routeWordDocument.InsertParagraph();
                     paragraph.Append($"Endereço: {teamData.GetValue("ENDEREÇO")} - {teamData.GetValue("CEP")}").Font("Times New Roman").FontSize(14);
 
-                    paragraph = doc.InsertParagraph();
+                    paragraph = routeWordDocument.InsertParagraph();
                     paragraph.Append($"O.S: {teamData.GetValue("OS")}  -  ").Font("Times New Roman").FontSize(14);
                     paragraph.Append($"TIPO O.S: {teamData.GetValue("TIPO OS")}").Font("Times New Roman").FontSize(14).Color(Color.White).Highlight(Xceed.Document.NET.Highlight.red);
 
                     foreach (var rout in route.Routes)
                     {
-                        paragraph = doc.InsertParagraph();
+                        paragraph = routeWordDocument.InsertParagraph();
                         paragraph.Append($"{rout[0] + rout[1..].ToLower()}: {teamData.GetValue(rout)}").Font("Times New Roman").FontSize(14);
                     }
                 }
-                doc.Save();
+                routeWordDocument.Save();
 
-                _excelFilesService.Remove();
-                return File(stream.ToArray(), "application/octet-stream", "Rotas.docx");
+                return File(stream.ToArray(), "application/octet-stream", $"Rotas-{DateTime.Now}.docx");
             }
             catch
             {

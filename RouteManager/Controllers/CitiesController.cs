@@ -33,6 +33,8 @@ namespace RouteManager.Controllers
         {
             if (ModelState.IsValid)
             {
+                city.Name = city.Name.ToUpper();
+                city.State = city.State.ToUpper();
                 var response = await CityService.Create(city);
                 if (response.StatusCode != System.Net.HttpStatusCode.OK) return RedirectToAction(nameof(Index));
             }

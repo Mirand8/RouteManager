@@ -52,8 +52,10 @@ namespace CitiesApiService.Controllers
         public async Task<dynamic> Post([FromBody] City cityParam)
         {
             var cities = await _citiesService.Get();
-            if (cities.Any(x => x.Name.ToLower() == cityParam.Name.ToLower())) return BadRequest("Ja existe uma cidade com esse nome!");
+            if (cities.Any(x => x.Name == cityParam.Name)) return BadRequest("Ja existe uma cidade com esse nome!");
 
+            cityParam.Name = cityParam.Name.ToUpper();
+            cityParam.State = cityParam.State.ToUpper();
             var city = await _citiesService.Create(cityParam);
 
             return CreatedAtRoute("GetCity", new { id = city.Id }, city);
