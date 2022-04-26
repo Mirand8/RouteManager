@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ModelsLib", "Models\ModelsL
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TeamApiService", "TeamApiService\TeamApiService.csproj", "{896AAEB4-E4C7-4D37-A4D0-8D20050F76CC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CitiesApiService", "CitiesApiService\CitiesApiService.csproj", "{3E026E3B-74E6-4F76-9179-D0309DD21B82}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CitiesApiService", "CitiesApiService\CitiesApiService.csproj", "{3E026E3B-74E6-4F76-9179-D0309DD21B82}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

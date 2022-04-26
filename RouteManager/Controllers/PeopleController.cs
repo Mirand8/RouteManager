@@ -28,7 +28,7 @@ namespace RouteManager.Controllers
             await PersonService.Create(person);
 
             return RedirectToAction(nameof(Index));
-        }        
+        }
 
         public async Task<IActionResult> Edit(string id)
         {
@@ -56,7 +56,7 @@ namespace RouteManager.Controllers
             var response = await PersonService.Delete(id);
             if (response.IsSuccessStatusCode) return RedirectToAction(nameof(Index));
 
-            return View(nameof(Index));
+            return RedirectToAction(nameof(Index));
         }
 
     }

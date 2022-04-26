@@ -69,10 +69,12 @@ namespace PersonApiService.Controllers
         {
             var person = await _personService.Get(id);
 
-            var personTeam = await TeamService.GetByName(person.CurrentTeam);
-            if (personTeam == null) return NotFound($"Time {person.CurrentTeam} não encontrado!");
-            await TeamService.UpdateToRemoveMember(personTeam.Id, person);
-
+            if (person.CurrentTeam != null)
+            {
+                var personTeam = await TeamService.GetByName(person.CurrentTeam);
+                if (personTeam == null) return NotFound($"Time {person.CurrentTeam} não encontrado!");
+                await TeamService.UpdateToRemoveMember(personTeam.Id, person);
+            }
             person = await _personService.Delete(id);
             if (person == null) return NotFound("Pessoa nao encontrada!");
             

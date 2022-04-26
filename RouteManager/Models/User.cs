@@ -8,8 +8,7 @@ namespace RouteManager.Models
         public string Name { get; set; }
 
         [Required]
-        [EmailAddress(ErrorMessage = "Email invalido!")]
-        public string Email { get; set; }
+        public string Username { get; set; }
 
         [Required]
         public string Password { get; set; }

@@ -32,12 +32,7 @@ namespace RouteManager.Controllers
         {
             if (ModelState.IsValid)
             {
-                var appUser = new AppUser { UserName = user.Name, Email = user.Email };
-
-                var result = await _userManager.CreateAsync(appUser, user.Password);
-                if (!result.Succeeded)
-                    foreach (IdentityError error in result.Errors) ModelState.AddModelError(string.Empty, error.Description);
-                ViewBag.Message = "Usuario criado com sucesso!";
+                
             }
 
             return View(user);

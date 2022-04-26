@@ -5,8 +5,10 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
 using RouteManager.Models;
 using RouteManager.MongoDbSettings;
+using RouteManager.Services;
 using System;
 
 namespace RouteManager
@@ -20,17 +22,19 @@ namespace RouteManager
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc();
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
-            var mongoDBSettings = Configuration.GetSection(nameof(MongoDbConfig)).Get<MongoDbConfig>();
+            var mongoDBSettings = Configuration.GetSection(nameof(MongoDBSettings)).Get<MongoDBSettings>();
             services.AddIdentity<AppUser, AppRole>().AddMongoDbStores<AppUser, AppRole, Guid>(mongoDBSettings.ConnectionString, mongoDBSettings.DatabaseName);
+
+            services.Configure<MongoDBSettings>(Configuration.GetSection(nameof(MongoDBSettings)));
+            services.AddSingleton<IMongoDBSettings>(x => x.GetRequiredService<IOptions<MongoDBSettings>>().Value);
+            services.AddSingleton<ExcelFileService>();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
@@ -41,7 +45,6 @@ namespace RouteManager
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
             app.UseHttpsRedirection();
