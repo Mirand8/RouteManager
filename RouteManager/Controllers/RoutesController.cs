@@ -26,11 +26,15 @@ namespace RouteManager.Controllers
             var headers = new List<string>();
 
             var excelFile = _excelFilesService.Get();
-            if (excelFile == null) return View();
+            if (excelFile == null)
+            {
+                ViewData["excelFileEmpty"] = "Nenhum arquivo excel foi importado ainda!";
+            }
             foreach (var item in excelFile.ExcelFiles.First()) headers.Add(item.Name);
 
             headers.RemoveAll(x => x == "CONTRATO" || x == "ASSINANTE" || x == "ENDEREÇO" || x == "CEP" || x == "OS" || x == "TIPO OS");
 
+            ViewBag.FileName = excelFile.FileName;
             ViewBag.Headers = headers;
             ViewBag.Services = new SelectList(_excelFilesService.GetServices());
             ViewBag.Cities = new SelectList(_excelFilesService.GetCities());

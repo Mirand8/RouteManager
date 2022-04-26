@@ -39,7 +39,7 @@ namespace RouteManager.Controllers
                     TempData["invalidFile"] = "Formato de arquivo inválido!";
                     return RedirectToAction(nameof(UploadFile));
                 }
-
+                
                 var xls = new XLWorkbook(files[0].OpenReadStream());
                 var sheet = xls.Worksheets.First();
 
@@ -93,7 +93,7 @@ namespace RouteManager.Controllers
                     var document = BsonSerializer.Deserialize<BsonDocument>(json);
                     excel.ExcelFiles.Add(document);
                 }
-
+                excel.FileName = files[0].FileName;
                 _excelService.Remove();
                 _excelService.Create(excel);
 
