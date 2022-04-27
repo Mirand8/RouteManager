@@ -13,9 +13,6 @@ namespace RouteManager.Models
         [Display(Name = "Cidade")]
         public CityViewModel City { get; set; }
 
-        [Display(Name = "Disponibilidade")]
-        public bool IsAvailable { get; set; }
-
         [Display(Name = "Membros")]
         [NotMapped]
         public virtual List<PersonViewModel> Members { get; set; } = new List<PersonViewModel>();

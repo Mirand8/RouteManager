@@ -13,9 +13,6 @@ namespace ModelsLib
         [JsonProperty("Members")]
         public List<Person> Members { get; set; }
         [BsonRequired]
-        [JsonProperty("IsAvailable")]
-        public bool IsAvailable { get; set; }
-        [BsonRequired]
         [JsonProperty("City")]
         public City City { get; set; }
     }

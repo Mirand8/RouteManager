@@ -47,9 +47,26 @@ namespace RouteManager.Controllers
         {
             try
             {
+                var teams = await TeamService.Get();
+                if (route.City != null)
+                    teams = teams.ToList().FindAll(x => x.City.Name.ToUpper() == route.City.ToUpper());
+
                 if (route.Service == null)
                 {
-                    return RedirectToAction(nameof(Index));
+                    ViewData["serviceEmpty"] = "Escolha um serviço!";
+                    return View(nameof(Index));
+                }
+
+                if (route.City == null)
+                {
+                    ViewData["cityEmpty"] = "Escolha uma cidade!";
+                    return View(nameof(Index));
+                }
+
+                if (!teams.Any())
+                {
+                    TempData["noTeamFound"] = "Nenhuma equipe foi encontrada na cidade escolhida!";
+                    return View();
                 }
 
                 var stream = new MemoryStream();
@@ -60,18 +77,6 @@ namespace RouteManager.Controllers
 
                 paragraph = routeWordDocument.InsertParagraph();
                 paragraph.Append("RETORNOS").Font("Times New Roman").FontSize(15).Bold().Alignment = Xceed.Document.NET.Alignment.center;
-
-                var teams = await TeamService.Get();
-                var availableTeam = teams.Where(x => x.IsAvailable);
-
-                if (route.City != null)
-                    availableTeam = availableTeam.ToList().FindAll(x => x.City.Name.ToUpper() == route.City.ToUpper());
-
-                if (!teams.Any())
-                {
-                    TempData["noTeamFound"] = "Nenhuma equipe foi encontrada!";
-                    return RedirectToAction(nameof(Index));
-                }
 
                 var excel = _excelFilesService.Get();
                 excel.ExcelFiles.RemoveAll(x => x.GetValue("SERVIÇO") != route.Service);

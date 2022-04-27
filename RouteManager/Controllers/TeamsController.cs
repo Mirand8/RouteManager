@@ -11,13 +11,15 @@ namespace RouteManager.Controllers
     {
         public async Task<IActionResult> Index()
         {
-            return View(await TeamService.Get());
+            var teams = await TeamService.Get();
+            return View(teams);
         }
 
         public async Task<IActionResult> Details(string id)
         {
             if (string.IsNullOrEmpty(id)) return RedirectToAction(nameof(Index));
-            return View(await TeamService.Get(id));
+            var team = await TeamService.Get(id);
+            return View(team);
         }
 
         public async Task<IActionResult> Create()
@@ -32,9 +34,8 @@ namespace RouteManager.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create([Bind("Name,IsAvailable")] TeamViewModel team)
+        public async Task<IActionResult> Create([Bind("Name")] TeamViewModel team)
         {
-
             var newMembers = new List<PersonViewModel>();
 
             if (ModelState.IsValid)
@@ -52,17 +53,19 @@ namespace RouteManager.Controllers
                     ModelState.AddModelError(nameof(team), "Um time deve ter pelo menos um membro!");
                     return RedirectToAction(nameof(Create));
                 }
+
                 var teams = await TeamService.Get();
                 if (teams.Any(x => x.Name == team.Name))
                 {
                     ModelState.AddModelError(nameof(team), "Ja existe um time com esse nome!");
                     return RedirectToAction(nameof(Create));
                 }
-                membersSelectedIds.ForEach(async personId =>
+
+                foreach (var personId in membersSelectedIds)
                 {
                     var person = await PersonService.Get(personId);
                     newMembers.Add(person);
-                });
+                }
 
                 team.Members = newMembers;
                 team.City = city;

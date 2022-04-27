@@ -5,11 +5,13 @@
 
 }
 
-<h2>Baixar Rota - @ViewBag.FileName</h2>
+<h2>Baixar Rota</h2>
+<b>Você esta usando este arquivo para gerar sua rota: <i style="color: #ffd700">@ViewBag.FileName</i></b>
+
 
 <div class="row">
     <div class="col-md-4">
-
+        <br />
         @if (ViewData["excelFileEmpty"] != null)
         {
             <h3><b style="color: red">@ViewData["excelFileEmpty"].ToString()</b></h3>
@@ -18,22 +20,37 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label class="control-label">Selecione as colunas</label><br>
-                @foreach (var item in ViewBag.Headers)
+                @if (ViewBag.Headers != null)
                 {
-                    <input name="checkData" type="checkbox" value=@item id="headersSelected" />
-                    <label for="@item.ToString()"> @item.ToString()</label>
-                    <br />
+                    @foreach (var item in ViewBag.Headers)
+                    {
+                        <input name="checkData" type="checkbox" value=@item id="headersSelected" />
+                        <label for="@item.ToString()"> @item.ToString()</label>
+                        <br />
+                    }
                 }
             </div>
+            <br />
             <div class="form-group">
-				Selecione o serviço: 
-				@Html.DropDownListFor(model => model.Service, ViewBag.Services as SelectList, "Selecione...", new{ @class = "form-control" })
-			</div>
+                Selecione o serviço:
+                @Html.DropDownListFor(model => model.Service, ViewBag.Services as SelectList, "Selecione...", new{ @class = "form-control" })
+                <div>
+                    @if (ViewData["serviceEmpty"] != null)
+                    {
+                        <h3><b style="color: red">Escolha um serviço!</b></h3>
+                    }
+                </div>
+            </div>
+            <br />
             <div class="form-group">
                 Selecione a cidade
                 <label asp-for="City" class="control-label"></label>
                 @Html.DropDownListFor(model => model.City, ViewBag.Cities as SelectList, "Selecione...", new { @class = "form-control" })
                 <span asp-validation-for="City" class="text-danger"></span>
+                @if (ViewData["cityEmpty"] != null)
+                {
+                    <h3><b style="color: red">Escolha uma cidade!</b></h3>
+                }
             </div>
             <div class="form-group">
                 <input type="submit" value="Baixar Rota" class="btn btn-primary" />
@@ -44,7 +61,7 @@
 
 @section Scripts {
 	@if(TempData["noTeamFound"] != null){
-        <h3><b style="color: red">Nenhum time encontrado!</b></h3>
+<h3><b style="color: red">Nenhum time encontrado!</b></h3>
 	}
 
     @{

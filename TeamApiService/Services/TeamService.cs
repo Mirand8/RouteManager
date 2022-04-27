@@ -55,14 +55,6 @@ namespace TeamApiService.Services
             return team;
         }
 
-        public async Task<Team> UpdateAvailablety(string id)
-        {
-            var team = await Get(id) ?? null;
-            team.IsAvailable = !team.IsAvailable;
-            await _teams.ReplaceOneAsync(team => team.Id == id, team);
-
-            return team;
-        }
         public async Task<Team> UpdateToAddMember(string id, Person personParam)
         {
             var team = await Get(id) ?? null;

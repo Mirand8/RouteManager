@@ -64,6 +64,8 @@ namespace TeamApiService.Controllers
 
             teamParam.City = city;
             teamParam.Members = people;
+
+            teamParam.Members.ForEach(async x => await _teamService.UpdateToAddMember(teamParam.Id, x));
             await _teamService.Create(teamParam);
 
             return CreatedAtRoute("GetTeam", new { id = teamParam.Id }, teamParam);
@@ -102,14 +104,6 @@ namespace TeamApiService.Controllers
 
             team.Members.ForEach(async member => await PersonService.UpdateCurrentTeam(member.Id, null));
 
-            return NoContent();
-        }
-
-        [HttpPut("Availablety/{id:length(24)}")]
-        public async Task<dynamic> UpdateAvailablety(string id)
-        {
-            var team = await _teamService.UpdateAvailablety(id);
-            if (team == null) return NotFound("Time nao encontrado!");
             return NoContent();
         }
 

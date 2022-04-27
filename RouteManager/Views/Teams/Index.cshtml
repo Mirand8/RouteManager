@@ -23,9 +23,6 @@
             <th>
                 @Html.DisplayNameFor(model => model.City)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.IsAvailable)
-            </th>
         </tr>
     </thead>
     <tbody>
@@ -45,9 +42,6 @@
 
                 <td>
                     @Html.DisplayFor(modelItem => item.City.CityRepresentation)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IsAvailable)
                 </td>
                 <td>
                     @Html.ActionLink("Editar", "Edit", new { id = item.Id }) |
